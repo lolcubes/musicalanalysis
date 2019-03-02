@@ -1,0 +1,61 @@
+import sys
+
+print("enter the filepath of the a_values")
+a_file = sys.stdin.readline()
+print("enter the filepath of the b_values")
+b_file = sys.stdin.readline()
+print("enter the filepath of the r_values")
+r_file = sys.stdin.readline()
+
+for char in a_file:
+    if char in '\n':
+        a_file = a_file.replace('\n', '')
+for char in b_file:
+    if char in '\n':
+        b_file = b_file.replace('\n', '')
+for char in r_file:
+    if char in '\n':
+        r_file = r_file.replace('\n', '')
+#replaces all newline characters in file with empty strings (removing them)
+
+f = open(a_file)
+a = f.read().split('\n')
+f.close()
+a_values = [float(i) for i in a]
+f2 = open(b_file)
+b = f2.read().split('\n')
+f2.close()
+b_values = [float(i) for i in b]
+f3 = open(r_file)
+r = f3.read().split('\n')
+f3.close()
+r_values = [float(i) for i in r]
+for x in range(0, len(r_values)):
+    r_values[x] = abs(r_values[x])
+#reads files and converts into lists containing floats
+
+z_values = []
+y_values = []
+values = []
+
+for x in range(0, len(r_values)):
+    z_values.append(r_values[x]/sum(r_values))
+#turns correlation coefficients into fraction of total
+    
+for x in range(0, len(a_values)):
+    val = a_values[x]/b_values[x]
+    if val > 1:
+        y_values.append(1 - (val - 1))
+    else:
+        y_values.append(val)
+#makes all a/b values under 1
+        
+for x in range(0, len(y_values)):
+    values.append(z_values[x]*y_values[x])
+#multiplies all y and z values
+    
+val = (sum(values))
+if val < 0:
+    print(0)
+else:
+    print(val)
